@@ -1,0 +1,102 @@
+plugins {
+	id 'org.springframework.boot' version '2.5.6-SNAPSHOT'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'org.asciidoctor.convert' version '1.5.8'
+	id 'java'
+	id 'idea'
+	id 'jacoco'
+}
+
+group = 'ro.home.project'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	sourceCompatibility = JavaVersion.VERSION_11
+	targetCompatibility = JavaVersion.VERSION_11
+}
+
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+	maven { url 'https://repo.spring.io/milestone' }
+	maven { url 'https://repo.spring.io/snapshot' }
+}
+
+ext {
+	set('snippetsDir', file("build/generated-snippets"))
+	lombokVersion = '1.18.8'
+	liquibaseVersion = '3.8.0'
+	swaggerVersion = '2.9.2'
+	findBugsVersion = '3.0.2'
+	logbackEncoderVersion = '6.2'
+	logbackClassicVersion = '1.2.3'
+}
+
+springBoot {
+	buildInfo {
+		properties {
+			artifact = rootProject.name
+			version = rootProject.version
+			group = rootProject.group
+		}
+	}
+}
+
+bootJar {
+	manifest {
+		attributes(
+				'Implementation-Title': project.name,
+				'Implementation-Vendor': 'Marian-Home',
+				'Implementation-Version': project.version,
+				'Target-Compatibility': project.targetCompatibility,
+				'Built-By': System.getProperty('user.name') + " on " + InetAddress.getLocalHost().getHostName(),
+				'Built-On': System.getProperty('os.name') + " (" + System.getProperty('os.arch') + ")",
+				'Start-Class': 'ro.home.project.Application',
+				'Main-Class': 'org.springframework.boot.loader.JarLauncher'
+		)
+	}
+	archiveBaseName = project.name
+	archiveVersion = project.version.toString()
+}
+
+dependencies {
+	compile "org.springframework.boot:spring-boot-starter-web"
+	compile "io.springfox:springfox-swagger2:$swaggerVersion"
+	compile "io.springfox:springfox-swagger-ui:$swaggerVersion"
+
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation "org.liquibase:liquibase-core:$liquibaseVersion"
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'com.fasterxml.jackson.core:jackson-databind'
+	implementation "com.google.code.findbugs:jsr305:$findBugsVersion"
+	implementation "net.logstash.logback:logstash-logback-encoder:$logbackEncoderVersion"
+	implementation "ch.qos.logback:logback-classic:$logbackClassicVersion"
+
+	compileOnly "org.projectlombok:lombok:$lombokVersion"
+	runtimeOnly 'org.postgresql:postgresql'
+
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+	annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+
+	testImplementation "ch.qos.logback:logback-classic:$logbackClassicVersion"
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+	testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
+}
+
+test {
+	outputs.dir snippetsDir
+	useJUnitPlatform()
+}
+
+asciidoctor {
+	inputs.dir snippetsDir
+	dependsOn test
+}

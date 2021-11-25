@@ -1,0 +1,98 @@
+<configuration>
+
+    <!-- for including service name in log statements -->
+    <springProperty name="service" scope="context" source="spring.application.name"/>
+
+    <!-- logback spring boot config defaults -->
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <!-- Propagates changes made to the level of any logback-classic logger onto the java.util.logging framework. -->
+    <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+        <resetJUL>true</resetJUL>
+    </contextListener>
+
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <!-- default logging profile -->
+    <springProfile name="!classicLogging">
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+                <providers>
+                    <timestamp/>
+                    <logLevel>
+                        <fieldName>loglevel</fieldName>
+                    </logLevel>
+                    <loggerName>
+                        <fieldName>logger</fieldName>
+                    </loggerName>
+                    <threadName>
+                        <fieldName>thread_id</fieldName>
+                    </threadName>
+                    <context/>
+                    <message/>
+                    <logstashMarkers/>
+                    <pattern>
+                        <omitEmptyFields>true</omitEmptyFields>
+                        <pattern>
+                            {
+                            "trace_id": "%X{trace_id:-}",
+                            "traceId": "%X{traceId:-}",
+                            "span_id": "%X{spanId:-}",
+                            "parent_span_id": "%X{parentSpanId:-}",
+                            "cif": "%X{iv-user:-}",
+                            "leCif": "%X{X-LE-CIF:-}",
+                            "user_session": "%X{X-Session-Id:-}",
+                            "username":"%X{username:-}"
+                            }
+                        </pattern>
+                    </pattern>
+                    <stackTrace>
+                        <throwableConverter class="net.logstash.logback.stacktrace.ShortenedThrowableConverter">
+                            <maxDepthPerThrowable>30</maxDepthPerThrowable>
+                            <maxLength>2048</maxLength>
+                            <shortenedClassNameLength>20</shortenedClassNameLength>
+                            <exclude>^sun\.reflect\..*\.invoke</exclude>
+                            <exclude>^net\.sf\.cglib\.proxy\.MethodProxy\.invoke</exclude>
+                            <rootCauseFirst>true</rootCauseFirst>
+                        </throwableConverter>
+                    </stackTrace>
+                </providers>
+            </encoder>
+        </appender>
+    </springProfile>
+    <springProfile name="classicLogging">
+
+        <!-- Overwrite default value from default.xml. -->
+        <property name="CONSOLE_LOG_PATTERN"
+                  value="%d{YYYY-MM-dd HH:mm:ss.SSS} DEFAULT [%thread] %-5level %logger{36} - %msg%n"/>
+
+        <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+    </springProfile>
+
+    <logger name="HYSTRIX_LOGGER" level="DEBUG"/>
+    <logger name="AUDIT_LOGGER" level="DEBUG"/>
+
+    <logger name="com.sun.xml.ws.transport.http.client.HttpTransportPipe" level="TRACE"/>
+    <logger name="com.sun.xml.internal.ws.transport.http.client.HttpTransportPipe" level="TRACE"/>
+    <logger name="com.sun.xml.ws.transport.http.HttpAdapter" level="TRACE"/>
+    <logger name="com.sun.xml.internal.ws.transport.http.HttpAdapter" level="TRACE"/>
+
+    <!-- dev, test, prelive environment logging profile -->
+    <springProfile name="!live">
+        <logger name="ro.home.project" level="TRACE"/>
+
+        <root level="WARN">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+
+    <!-- test environment logging profile -->
+    <springProfile name="live">
+        <logger name="ro.home.project" level="DEBUG"/>
+
+        <root level="WARN">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+
+</configuration>

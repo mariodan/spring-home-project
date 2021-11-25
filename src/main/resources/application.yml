@@ -1,0 +1,54 @@
+spring:
+  application:
+    name: my-rest-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/marian_test?reWriteBatchedInserts=true
+    username: marian_test
+    password: marian_test
+    driverClassName: org.postgresql.Driver
+  liquibase:
+    enabled: true
+  jpa:
+    open-in-view: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          batch_size: 10
+          order_inserts: true
+          order_updates: true
+
+
+
+management:
+  healt:
+    redis:
+      enabled: false
+  endpoint:
+    health:
+      show-details: ALWAYS
+  endpoints:
+    web:
+      base-path: /management
+      exposure:
+        include: '*'
+
+springfox.documentation.swagger:
+  v2.path: ${management.endpoints.web.base-path}/swagger
+
+---
+pring.profiles.include: classicLogging
+
+config:
+  log-rest-template: true
+
+spring:
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        generate_statistics: true
+  config:
+    activate:
+      on-profile: local
