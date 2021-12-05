@@ -1,19 +1,15 @@
 package ro.home.project.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.hibernate.annotations.Type;
 import ro.home.project.domain.enums.ProcessStatus;
 import ro.home.project.domain.enums.ProcessStatusConverter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.Currency;
-import java.util.List;
 
 @Data
 @Entity
@@ -59,3 +55,4 @@ public class DocumentDetails extends BaseEntity {
     private String clientName;
 
 }
+

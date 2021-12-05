@@ -39,6 +39,11 @@ pring.profiles.include: classicLogging
 config:
   log-rest-template: true
 
+logging:
+  level:
+    root: INFO
+logging.level.ro.home.project: DEBUG
+
 spring:
   jpa:
     show-sql: false

@@ -23,7 +23,7 @@ public class ScheduledWorkRefillService {
     }
 
     @Scheduled(fixedDelay = 4000)
-    public void fillWorkForProducers() {
+    public void run() {
         
         DocumentDetails documentDetails = DocumentDetails
                 .builder()
@@ -36,9 +36,9 @@ public class ScheduledWorkRefillService {
                 .processStatus(ProcessStatus.PENDING)
                 .build();
 
-        documentDetails = documentDetailsRepository.save(documentDetails);
+        //documentDetails = documentDetailsRepository.save(documentDetails);
 
-        LOGGER.info("Start filling work...{}", documentDetails);
+        //LOGGER.debug("Start filling work...{}", documentDetails);
     }
 
     private BigDecimal getRandomAmount() {
