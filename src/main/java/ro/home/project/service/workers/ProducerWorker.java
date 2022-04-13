@@ -38,9 +38,7 @@ public class ProducerWorker {
 
         results.stream().skip(0).limit(10).forEach(addToQueue());
 
-        if (!results.isEmpty()) {
-            startConsumers();
-        }
+        startConsumers();
     }
 
     private Consumer<DocumentDetails> addToQueue() {
@@ -54,6 +52,6 @@ public class ProducerWorker {
     }
 
     private void startConsumers() {
-        IntStream.range(1, 5).forEach(i -> asyncExecutor.execute(new ConsumerWorker(documentDetailsQueue, documentDetailsService)));
+        IntStream.rangeClosed(1, 5).forEach(i -> asyncExecutor.execute(new ConsumerWorker(documentDetailsQueue, documentDetailsService)));
     }
 }

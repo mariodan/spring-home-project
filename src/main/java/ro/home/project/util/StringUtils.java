@@ -1,6 +1,11 @@
 package ro.home.project.util;
 
+import ro.home.project.domain.entity.FilePayment;
+
+import java.util.Comparator;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class StringUtils {
 
@@ -22,5 +27,13 @@ public class StringUtils {
         }
 
         return inputString.concat("_").concat(sb.toString());
+    }
+
+    public static void test() {
+
+        List<FilePayment> myList = List.of(FilePayment.builder().build());
+
+        List<FilePayment> top3Files = myList.stream().sorted(Comparator.comparing(FilePayment::getId).reversed()).limit(3).collect(Collectors.toList());
+
     }
 }
