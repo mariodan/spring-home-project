@@ -2,9 +2,7 @@ spring:
   application:
     name: my-rest-service
   datasource:
-    url: jdbc:postgresql://localhost:5432/marian_test?reWriteBatchedInserts=true
-    username: marian_test
-    password: marian_test
+    url: jdbc:postgresql://localhost:5432/mariandanscoi?reWriteBatchedInserts=true
     driverClassName: org.postgresql.Driver
   liquibase:
     enabled: true
@@ -17,7 +15,6 @@ spring:
           batch_size: 10
           order_inserts: true
           order_updates: true
-
 
 
 management:
@@ -41,13 +38,18 @@ springfox.documentation.swagger:
 config:
   log-rest-template: true
 
+logging:
+  level:
+    root: INFO
+logging.level.ro.home.project: DEBUG
+
 spring:
   jpa:
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         format_sql: true
-        generate_statistics: true
+        generate_statistics: false
   config:
     activate:
       on-profile: local

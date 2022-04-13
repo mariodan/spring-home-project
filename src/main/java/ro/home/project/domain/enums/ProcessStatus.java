@@ -7,7 +7,8 @@ public enum ProcessStatus {
     SUCCESS(3),
     PARTIALLY_FAILED(4),
     FAILED(5),
-    CANCELLED(6);
+    CANCELLED(6),
+    IN_PROGRESS(7);
 
     private int code;
 
