@@ -46,7 +46,6 @@ springfox.documentation.swagger:
   v2.path: ${management.endpoints.web.base-path}/swagger
 
 ---
-pring.profiles.include: classicLogging
 
 config:
   log-rest-template: true
