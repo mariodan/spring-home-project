@@ -1,6 +1,8 @@
 spring:
   application:
     name: my-rest-service
+    defaultDateTimeFormat: yyyy-MM-dd HH:mm:ss
+    defaultTimeZone: 'UTC'
   datasource:
     url: jdbc:postgresql://localhost:5432/mariandanscoi?reWriteBatchedInserts=true
     driverClassName: org.postgresql.Driver
@@ -12,10 +14,20 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         jdbc:
+          jdbc.time_zone: UTC
           batch_size: 10
           order_inserts: true
           order_updates: true
-
+  mvc:
+    format:
+      date-time: iso
+  jackson:
+    # Date format string or a fully-qualified date format class name. For instance, 'yyyy-MM-dd HH:mm:ss'
+    date-format: "yyyy-MM-dd HH:mm:ss.SSS"
+    # Locale used for formatting
+    time-zone: "UTC"
+  workers:
+    start: true
 
 management:
   healt:

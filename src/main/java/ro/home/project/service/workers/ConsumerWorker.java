@@ -20,8 +20,7 @@ public class ConsumerWorker implements Runnable {
 
     @Override
     public void run() {
-        Optional.ofNullable(queue.poll())
-                .ifPresentOrElse(processDocument(), () -> LOGGER.debug("Could not fetch element from queue. Queue may be empty"));
+        Optional.ofNullable(queue.poll()).ifPresent(processDocument());
     }
 
     private Consumer<DocumentDetails> processDocument() {

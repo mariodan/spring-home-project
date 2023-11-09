@@ -69,7 +69,6 @@
         <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
     </springProfile>
 
-    <logger name="HYSTRIX_LOGGER" level="DEBUG"/>
     <logger name="AUDIT_LOGGER" level="DEBUG"/>
 
     <logger name="com.sun.xml.ws.transport.http.client.HttpTransportPipe" level="TRACE"/>

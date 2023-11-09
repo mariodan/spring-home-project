@@ -42,7 +42,7 @@ public class LoggerRequestInterceptorAdapter implements HandlerInterceptor {
 
         LOGGING_CTX_TL.set(lc);
 
-        LOGGER.info(lc.commonMarkers, "Request processing started... " + request.getRequestURI());
+        //LOGGER.debug("Request processing started: {}", request.getRequestURI());
         return true;
     }
 
@@ -81,8 +81,8 @@ public class LoggerRequestInterceptorAdapter implements HandlerInterceptor {
                 httpAuditMarker.and(Markers.append(HTTP_QUERY_PARAMS, queryString));
             }
 
-            LOGGER.info(httpAuditMarker.and(Markers.append(EXECUTION_TIME, System.currentTimeMillis() - startTime)),
-                    "Request processing ended.");
+            long executionTime = System.currentTimeMillis() - startTime;
+            LOGGER.debug("Request: {}, status: {}, {}ms", request.getRequestURI(), response.getStatus(), executionTime);
         } finally {
             LOGGING_CTX_TL.remove();
         }

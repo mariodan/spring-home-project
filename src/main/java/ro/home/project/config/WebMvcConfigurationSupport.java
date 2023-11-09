@@ -11,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import ro.home.project.web.filter.LoggerRequestInterceptorAdapter;
 import ro.home.project.web.filter.RequestResponseLoggingInterceptor;
 
@@ -30,6 +31,13 @@ public class WebMvcConfigurationSupport implements WebMvcConfigurer {
     @Override
     public void configureContentNegotiation(final ContentNegotiationConfigurer configurer) {
         configurer.defaultContentType(MediaType.parseMediaType("application/json"));
+    }
+
+    @Bean
+    public LocaleChangeInterceptor localeChangeInterceptor() {
+        LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
+        lci.setParamName("lang");
+        return lci;
     }
 
 }

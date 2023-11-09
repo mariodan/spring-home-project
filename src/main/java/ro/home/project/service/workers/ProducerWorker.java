@@ -2,6 +2,7 @@ package ro.home.project.service.workers;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import ro.home.project.domain.entity.DocumentDetails;
@@ -16,6 +17,7 @@ import java.util.stream.IntStream;
 
 @Slf4j
 @Component
+@ConditionalOnProperty(name = "spring.workers.start", havingValue = "true", matchIfMissing = false)
 public class ProducerWorker {
 
     private final BlockingQueue<DocumentDetails> documentDetailsQueue;
@@ -30,11 +32,10 @@ public class ProducerWorker {
         this.asyncExecutor = asyncExecutor;
     }
 
-    @Scheduled(fixedDelay = 3000)
+    @Scheduled(fixedDelay = 30000)
     public void produce() {
 
         Set<DocumentDetails> results = documentDetailsService.getEligibleDocumentDetails(ProcessStatus.PENDING);
-        LOGGER.debug("Looking for eligible documentDetails ... size: {}", results.size());
 
         results.stream().skip(0).limit(10).forEach(addToQueue());
 

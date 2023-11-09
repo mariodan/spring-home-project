@@ -29,7 +29,7 @@ public class FilePaymentsController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity deleteFilePaymentById(@PathVariable long id) {
+	public ResponseEntity<Void> deleteFilePaymentById(@PathVariable long id) {
 		filePaymentsService.deleteFilePayment(List.of(id));
 		return ResponseEntity.noContent().build();
 	}

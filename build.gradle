@@ -32,7 +32,7 @@ ext {
 	set('snippetsDir', file("build/generated-snippets"))
 	lombokVersion = '1.18.8'
 	liquibaseVersion = '3.8.0'
-	swaggerVersion = '2.9.2'
+	swaggerVersion = '3.0.0'
 	findBugsVersion = '3.0.2'
 	logbackEncoderVersion = '6.2'
 	logbackClassicVersion = '1.2.3'
@@ -66,8 +66,11 @@ bootJar {
 }
 
 dependencies {
+	compileOnly("org.springframework.boot:spring-boot-devtools")
+
 	compile "org.springframework.boot:spring-boot-starter-web"
-	compile "io.springfox:springfox-swagger2:$swaggerVersion"
+
+	implementation "io.springfox:springfox-boot-starter:$swaggerVersion"
 	compile "io.springfox:springfox-swagger-ui:$swaggerVersion"
 
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
